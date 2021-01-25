@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <title>Connect4</title>
+</head>
+<body>
+    <section id="game">
+        <div class="header">
+            <a href="index.html" class="btn-home" type="button">Home</a>
+            <div id="generalTime">
+                <p id="time">00:00</p>
+            </div>
+        </div>
+        <div class="game">
+            <div id="playArea">
+                <div id="popup" class="hidden">
+                    <p id="winner"></p>
+                    <p id="message"></p>
+                    <button id="reset">Play Again</button>
+                </div>
+                <div id="gameZone"></div>
+                <div id="divider"></div>
+                <div id="scoreboard">
+                    <div class="opponent">
+                        <div class="player">
+                            <div class="slot-p1"></div>
+                            <p id="p1">Name </p>
+                        </div>
+                        <p id="p1Time">00:00</p>
+                    </div>
+                    <div id="turn" class="turn slot"><p id="turn-text">P1</p></div>
+                    <div class="opponent">
+                        <div class="player">
+                            <div class="slot-p2"></div>
+                            <p id="p2">Name </p>
+                        </div>
+                        <p id="p2Time">00:00</p>
+                    </div>
+                </div>
+            </div>
+            <div id="keypad">
+                <button id="gameSave" class="btn-keypad">Save</button>
+                <button id="gameRestart" class="btn-keypad">Restart</button>
+            </div>
+        </div>
+        <div class="footer">
+            <a href="https://facebook.com"><span class="fab fa-facebook"></span></a>
+            <a href="https://instagram.com"><span class="fab fa-instagram"></span></a>
+            <a href="https://twitter.com"><span class="fab fa-twitter"></span></a>
+            <a href="https://github.com"><span class="fab fa-github"></span></a>
+        </div>
+    </section>
+</body>
+</html>
