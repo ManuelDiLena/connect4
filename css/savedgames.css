@@ -1,0 +1,217 @@
+/* General */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Saved Games Section */
+#savedGames {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 100vh;
+    width: 100%;
+    background: url(../images/fondo1.jpg);
+    background-size: cover;
+}
+
+.header {
+    align-self: flex-start;
+    padding: 10px 10px;
+}
+
+.btn-home {
+    text-align: center;
+    text-decoration: none;
+    background-color: #000746;
+    border: solid #000000;
+    color: #8c8c8c;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 0 10px 0 10px;
+    outline: none;
+    transition: all 0.5s;
+}
+
+.btn-home:hover {
+    background-color: #0022ff;
+    border-color: #8c8c8c;
+    color: #ffffff;
+}
+
+.saved-games {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 50%;
+    height: 75%;
+    background-color: #000746;
+    border-radius: 10px;
+    box-shadow: 0 0 40px #000000;
+}
+
+h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70%;
+    height: 17%;
+    color: #8c8c8c;
+    font-size: 40px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+#gamesList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 80%;
+    background: transparent;
+}
+
+#empty {
+    padding: 5px;
+    border-radius: 20px;
+    background-color: #f7f7f7;
+    font-size: 15px;
+    font-weight: 700;
+    color: #000000;
+    transition: 0.3s;
+}
+
+.game {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 4px;
+    padding: 0 5px;
+    background-color: #b9b9b9;
+    border-radius: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.5s;
+}
+
+.game:hover {
+    background-color: #ffffff;
+}
+
+.match-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    min-width: 400px;
+    margin: 8px 16px 0 16px;
+    font-size: 16px;
+    pointer-events: none;
+}
+
+.game-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 0 8px;
+}
+
+.match-container p {
+    padding: 0;
+    margin: 0;
+}
+
+.date {
+    margin: 4.8px 0;
+    padding: 0;
+    font-size: 12px;
+    pointer-events: none;
+}
+
+#optionsList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 25%;
+}
+
+#controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 80%;
+    height: 40%;
+}
+
+.btn-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40%;
+    height: 90%;
+    background: transparent;
+    color: #8c8c8c;
+    font-size: 20px;
+    cursor: pointer;
+    border: 3px solid #000000;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.5s;
+}
+
+.btn-controls:hover {
+    background: #0022ff;
+    border: 3px solid #8c8c8c;
+    color: #ffffff;
+}
+
+.btn-saved {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    height: 40%;
+    background: transparent;
+    color: #8c8c8c;
+    font-size: 20px;
+    cursor: pointer;
+    border: 3px solid #000000;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.5s;
+}
+
+.btn-saved:hover {
+    background: #0022ff;
+    border: 3px solid #8c8c8c;
+    color: #ffffff;
+}
+
+.disabled {
+    pointer-events: none;
+}
+
+
+@media screen and (max-width: 650px) {
+    .saved-games {
+        width: 75%;
+    }
+
+    h2 {
+        font-size: 30px;
+    }
+} 
