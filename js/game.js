@@ -19,10 +19,68 @@ var twoPlayerBoard = [
     [null, null, null, null, null, null]
 ];
 
+//Funcion para comprobar los escenarios posibles para ganar
+var checkWin = function() {
+    //check vertical placement
+    for(var i = 0; i < board.board.length; i++) {
+        for(var j = 0; j < 4; j++) {
+            if(board.board[i][j]) {
+                if(board.board[i][j] === (board.board[i][j + 1]) && board.board[i][j] === (board.board[i][j + 2]) && 
+                board.board[i][j] === (board.board[i][j + 3])) {
+                    console.log('game over vertical ' + board.board[i][j]);
+                }
+            }
+        }
+    }
+
+    for(var i = 0; i < 4; i++) {
+        for(var j = 0; j < 4; j++) {
+            if(board.board[i][j]) {
+                //check horizontal placement
+                if(board.board[i][j] === (board.board[i + 1][j]) && board.board[i][j] === (board.board[i + 2][j]) && 
+                board.board[i][j] === (board.board[i + 3][j])) {
+                    console.log('game over horizontal ' + board.board[i][j]);
+                }
+                //check diagonal increment placement
+                if(board.board[i][j] === (board.board[i + 1][j + 1]) && board.board[i][j] === (board.board[i + 2][j + 2]) && 
+                board.board[i][j] === (board.board[i + 3][j + 3])) {
+                    console.log('game over diagonal inc ' + board.board[i][j]);
+                }
+            }
+        }
+    }
+    //check diagonal decrement placement
+    for (var i = 0; i < board.board.length - 3; i++) {
+        for (var j = 3; j < board.board[i].length; j++) {
+            if (board.board[i][j]) {
+                if (board.board[i][j] === (board.board[i + 1][j - 1]) && board.board[i][j] === (board.board[i + 2][j - 2]) && 
+                board.board[i][j] === (board.board[i + 3][j - 3]) ) {
+                    console.log('game over diagonal dec ' + board.board[i][j]);
+                }
+            }
+        }
+    }
+}
+
+//Funcion para chequear si el tablero esta lleno por completo
+var checkDraw =  function() {
+    for(var i = 0; i < board.board.length; i++) {
+        if(board.board[i].includes(null)) {
+            var isFull = false
+            return;
+        } else {
+            isFull = true;
+        }
+    }
+    if(isFull) {
+        console.log('It\'s a tie!');
+    }
+}
+
 var getPlayerNames = function() {
     var savedNames = JSON.parse(localStorage['playersNames']);
-    p1Name.innerHTML = savedNames[0].namep1;
-    p2Name.innerHTML = savedNames[0].namep2;
+    p1Name.innerHTML = savedNames[0].namep1 + ' (P1)';
+    p2Name.innerHTML = savedNames[0].namep2 + ' (P2)';
 }
 
 //Funcion para cambiar el color de las fichas de los jugadores dependiendo el turno

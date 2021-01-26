@@ -174,7 +174,7 @@
 }
 
 .switch-p1 {
-    transform: rotateY(180deg) !important;
+    transform: rotateY(360deg) !important;
     transition: 0.3s;
 }
 
