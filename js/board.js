@@ -17,6 +17,8 @@ class Board {
         var columnId = evt.target.id.substr(1, 1);
         for(var i = 0; i < this.board[columnId].length; i++) {
             if(!this.board[columnId][i]) {
+                this.board[columnId][i] = turn;
+                toggleTurn();
                 this.render();
                 break;
             }

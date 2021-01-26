@@ -70,6 +70,12 @@
     justify-content: space-between;
 }
 
+.outline {
+    display: flex;
+    width: 20px;
+    height: 100%;
+}
+
 .board {
     display: flex;
     flex-direction: row;
@@ -123,7 +129,7 @@
     margin: 0;
     padding: 0;
     background-color: #b9b9b9;
-    font-size: 20px;
+    font-size: 18px;
     color: #000746;
 }
 
@@ -143,7 +149,7 @@
     height: 50%;
 }
 
-.player .slot-p1 {
+.player .turn-p1 {
     width: 40px;
     height: 40px;
     margin: 10px 5px;
@@ -151,12 +157,30 @@
     background-color: #ba0000;
 }
 
-.player .slot-p2 {
+.player .turn-p2 {
     width: 40px;
     height: 40px;
     margin: 10px 5px;
     border-radius: 40px;
     background-color: #018812;
+}
+
+.player .gray {
+    width: 40px;
+    height: 40px;
+    margin: 10px 5px;
+    border-radius: 40px;
+    background-color: #5a5a5a;
+}
+
+.switch-p1 {
+    transform: rotateY(180deg) !important;
+    transition: 0.3s;
+}
+
+.switch-p2 {
+    transform: rotateY(360deg) !important;
+    transition: 0.3s;
 }
 
 #p1Time,
@@ -179,12 +203,12 @@
     align-items: center;
     justify-content: center;
     background-color: transparent;
+    width: 100px;
     color: #8c8c8c;
     font-size: 18px;
     cursor: pointer;
     border: solid #000000;
     border-radius: 5px;
-    padding: 0 10px;
     outline: none;
     transition: all 0.5s;
 }
