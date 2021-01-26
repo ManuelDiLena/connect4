@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link rel="stylesheet" href="css/game.css">
     <script type="text/javascript" src="js/board.js"></script>
+    <script type="text/javascript" src="js/player.js"></script>
     <script type="text/javascript" src="js/game.js"></script>
     <title>Connect4</title>
 </head>
@@ -19,9 +20,9 @@
         </div>
         <div class="game">
             <div id="playArea">
-                <div id="win" class="hidden">
-                    <p id="winner">Player Name</p>
-                    <p>WON!</p>
+                <div id="popup" class="hidden">
+                    <p id="winner"></p>
+                    <p id="message"></p>
                     <button id="reset">Play Again</button>
                 </div>
                 <div id="gameZone">

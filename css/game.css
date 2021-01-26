@@ -241,7 +241,7 @@
     color: #0022ff;
 }
 
-#win {
+#popup {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -258,12 +258,12 @@
     z-index: 1;
 }
 
-#win p {
+#popup p {
     margin: 8px 0;
     padding: 0;
 }
 
-#win p:nth-child(2) {
+#popup p:nth-child(2) {
     letter-spacing: 3px;
     font-size: 18px;
 }
