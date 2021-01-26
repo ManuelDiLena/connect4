@@ -9,6 +9,47 @@ var btnAdd = null;
 var btnAddContainer = null;
 var playerNames = [];
 
+//Funcion para agregar el input del 3 jugador con el boton +
+var displayInput = function() {
+    if(btnAddContainer.className === '' || btnAddContainer.className === 'shift-right') {
+        p3Tag.className = 'tag';
+        p3Name.className = ' ';
+        btnAddContainer.className = 'shift-left';
+        btnAdd.className += ' del';
+        btnAdd.innerHTML = '-';
+    } else {
+        p3Tag.className = 'hidden';
+        p3Name.className = 'hidden';
+        btnAddContainer.className = 'shift-right';
+        btnAdd.className = 'btn';
+        btnAdd.innerHTML = '+';
+    }
+}
+
+//Funcion para validar los nombres ingresados en los inputs
+var validateInput = function() {
+    var isValid = true;
+
+    if(p3Name.className === ' ' && p3Name.value.length < 3) {
+        p3Name.value = '';
+        p3Name.placeholder = 'Too short!';
+        isValid = false;
+    }
+
+    if(p1Name.value.length < 3) {
+        p1Name.value = '';
+        p1Name.placeholder = 'Too short!';
+        isValid = false;
+    }
+
+    if(p2Name.value.length < 3) {
+        p2Name.value = '';
+        p2Name.placeholder = 'Too short!';
+        isValid = false;
+    }
+    return isValid;
+}
+
 //Funcion para guardar los nombres ingresados por los jugadores
 var savePlayerNames = function() {
     if(p3Name.value.length > 0 ) {
@@ -19,7 +60,19 @@ var savePlayerNames = function() {
     localStorage['playersNames'] = JSON.stringify(playerNames);
 }
 
+var errorBtn = function() {
+    btnPlay.innerHTML = 'Invalid Names';
+    btnPlay.className += ' error';
+    setTimeout(errorMsg, 3000);
+}
+
+var errorMsg = function() {
+    btnPlay.className = 'btn-players';
+    btnPlay.innerHTML = 'Play!';
+}
+
 var nextPage = function() {
+    savePlayerNames();
     location.href = 'game.html';
 }
 
@@ -33,22 +86,9 @@ window.onload = function() {
     btnAddContainer = document.getElementById('btnContainer');
 
     btnAdd.addEventListener('click', function() {
-        if(btnAddContainer.className === '' || btnAddContainer.className === 'shift-right') {
-            p3Tag.className = 'tag';
-            p3Name.className = ' ';
-            btnAddContainer.className = 'shift-left';
-            btnAdd.className += ' del';
-            btnAdd.innerHTML = '-';
-        } else {
-            p3Tag.className = 'hidden';
-            p3Name.className = 'hidden';
-            btnAddContainer.className = 'shift-right';
-            btnAdd.className = 'btn';
-            btnAdd.innerHTML = '+';
-        }
+        displayInput();
     });
     btnPlay.addEventListener('click', function() {
-        savePlayerNames();
-        nextPage();
+        (validateInput()) ? nextPage() : errorBtn();
     });
 } 
