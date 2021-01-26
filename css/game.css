@@ -174,12 +174,12 @@
 }
 
 .switch-p1 {
-    transform: rotateY(360deg) !important;
+    transform: rotateY(360deg);
     transition: 0.3s;
 }
 
 .switch-p2 {
-    transform: rotateY(360deg) !important;
+    transform: rotateY(360deg);
     transition: 0.3s;
 }
 
@@ -241,7 +241,7 @@
     color: #0022ff;
 }
 
-#popup {
+#win {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -258,12 +258,12 @@
     z-index: 1;
 }
 
-#popup p {
+#win p {
     margin: 8px 0;
     padding: 0;
 }
 
-#popup p:nth-child(2) {
+#win p:nth-child(2) {
     letter-spacing: 3px;
     font-size: 18px;
 }
@@ -286,8 +286,8 @@
     color: #ffffff;
 }
 
-.blur {
-    filter: blur(2px);
+.hidden {
+    display: none;
 }
 
 @keyframes bounce {
