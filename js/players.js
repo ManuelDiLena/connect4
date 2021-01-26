@@ -4,16 +4,34 @@ var p1Name = null;
 var p2Name = null;
 var p3Name = null;
 var p3Tag = null;
+var btnPlay = null;
 var btnAdd = null;
 var btnAddContainer = null;
+var playerNames = [];
+
+//Funcion para guardar los nombres ingresados por los jugadores
+var savePlayerNames = function() {
+    if(p3Name.value.length > 0 ) {
+        playerNames.push({namep1: p1Name.value, namep2: p2Name.value, namep3: p3Name.value});
+    } else {
+        playerNames.push({namep1: p1Name.value, namep2: p2Name.value});
+    }
+    localStorage['playersNames'] = JSON.stringify(playerNames);
+}
+
+var nextPage = function() {
+    location.href = 'game.html';
+}
 
 window.onload = function() {
     p1Name = document.getElementById('p1Name');
     p2Name = document.getElementById('p2Name');
     p3Name = document.getElementById('p3Name');
     p3Tag = document.getElementById('p3Tag');
+    btnPlay = document.getElementById('namesPlay')
     btnAdd = document.getElementById('addPlayer');
-    btnAddContainer = document.getElementById('btnContainer')
+    btnAddContainer = document.getElementById('btnContainer');
+
     btnAdd.addEventListener('click', function() {
         if(btnAddContainer.className === '' || btnAddContainer.className === 'shift-right') {
             p3Tag.className = 'tag';
@@ -28,5 +46,9 @@ window.onload = function() {
             btnAdd.className = 'btn';
             btnAdd.innerHTML = '+';
         }
+    });
+    btnPlay.addEventListener('click', function() {
+        savePlayerNames();
+        nextPage();
     });
 } 
