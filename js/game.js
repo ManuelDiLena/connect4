@@ -17,9 +17,11 @@ var globalTimerHTML = null;
 var popup = null;
 var popupMessage = null;
 var popupWinner = null;
+var resetBtn = null;
 var board = null;
 var turn = null;
 var lastUpdatedTime = new Date().getTime();
+var gameOver = false;
 
 var twoPlayerBoard = [
     [null, null, null, null, null, null],
@@ -31,8 +33,31 @@ var twoPlayerBoard = [
     [null, null, null, null, null, null]
 ];
 
+//Funciones para reiniciar el juego y los cronometros
+var resetGame = function() {
+    gameOver = false;
+    popup.className = ' hidden';
+    board.resetBoard();
+    board.render();
+    resetTimers();
+    setTimeout(toggleTurn, 1);
+}
+
+var resetTimers = function() {
+    globalTimer.resetTimer();
+    p1Timer.resetTimer();
+    p2Timer.resetTimer();
+}
+
+var stopTimers = function() {
+    globalTimer.stopTimer();
+    p1Timer.stopTimer();
+    p2Timer.stopTimer();
+}
+
 //Funcion para mostrar cartel con el ganador
 var displayPopup = function(playerName) {
+    gameOver = true;
     popup.className = ' ';
     if(playerName) {
         playerName = (playerName === 'p1') ? p1.name : p2.name;
@@ -42,6 +67,8 @@ var displayPopup = function(playerName) {
         popupWinner.innerHTML = 'Nobody wins...';
         popupMessage.innerHTML = 'It\'s a TIE!';
     }
+    boardHTML.className += ' blur'
+    stopTimers();
 }
 
 //Funcion para comprobar los escenarios posibles para ganar
@@ -121,15 +148,17 @@ var flipTurn = function() {
 }
 
 var toggleTurn = function() {
-    turn = (turn === 'p1') ? 'p2' : 'p1';
-    if(turn === 'p1') {
-        p2Timer.stopTimer();
-        p1Timer.startTimer();
-    } else {
-        p1Timer.stopTimer();
-        p2Timer.startTimer();
+    if(!gameOver) {
+        turn = (turn === 'p1') ? 'p2' : 'p1';
+        if(turn === 'p1') {
+            p2Timer.stopTimer();
+            p1Timer.startTimer();
+        } else {
+            p1Timer.stopTimer();
+            p2Timer.startTimer();
+        }
+        flipTurn();
     }
-    flipTurn();
 }
 
 window.onload = function() {
@@ -145,6 +174,7 @@ window.onload = function() {
     popup = document.getElementById('popup');
     popupMessage = document.getElementById('message');
     popupWinner = document.getElementById('winner');
+    document.getElementById('reset').addEventListener('click', resetGame);
     getPlayerNames();
     p1 = new Player(p1Name.innerHTML.slice(0, -5));
     p2 = new Player(p2Name.innerHTML.slice(0, -5));

@@ -290,6 +290,10 @@
     display: none;
 }
 
+.blur {
+    filter: blur(2px);
+}
+
 @keyframes bounce {
     0% {
         opacity: 0;
