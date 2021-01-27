@@ -18,6 +18,7 @@ var popup = null;
 var popupMessage = null;
 var popupWinner = null;
 var resetBtn = null;
+var restartBtn = null;
 var board = null;
 var turn = null;
 var lastUpdatedTime = new Date().getTime();
@@ -34,6 +35,15 @@ var twoPlayerBoard = [
 ];
 
 //Funciones para reiniciar el juego y los cronometros
+var restartGame = function() {
+    gameOver = false;
+    popup.className = ' hidden';
+    board.resetBoard();
+    board.render();
+    resetTimers();
+    setTimeout(toggleTurn, 1);
+}
+
 var resetGame = function() {
     gameOver = false;
     popup.className = ' hidden';
@@ -175,6 +185,7 @@ window.onload = function() {
     popupMessage = document.getElementById('message');
     popupWinner = document.getElementById('winner');
     document.getElementById('reset').addEventListener('click', resetGame);
+    document.getElementById('gameRestart').addEventListener('click', restartGame);
     getPlayerNames();
     p1 = new Player(p1Name.innerHTML.slice(0, -5));
     p2 = new Player(p2Name.innerHTML.slice(0, -5));
