@@ -19,9 +19,12 @@ var popupMessage = null;
 var popupWinner = null;
 var resetBtn = null;
 var restartBtn = null;
+var saveBtn = null;
 var board = null;
 var turn = null;
 var lastUpdatedTime = new Date().getTime();
+var savedGames = [];
+var savedTimers = [];
 var gameOver = false;
 
 var twoPlayerBoard = [
@@ -79,6 +82,23 @@ var displayPopup = function(playerName) {
     }
     boardHTML.className += ' blur'
     stopTimers();
+}
+
+var getDate = function() {
+    var date = new Date();
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+    return day + '/' + month + '/' + year;
+}
+
+//Funcion para guardar la partida con los nombres y los tiempos
+var saveGame = function() {
+    savedGames.push({currentBoard: board.board, p1: p1, p2: p2, turn: turn, date: getDate()});
+    savedTimers.push({p1: p1Timer, p2: p2Timer, globalTime: globalTimer});
+    localStorage['savedGames'] = JSON.stringify(savedGames);
+    localStorage['savedTimers'] = JSON.stringify(savedTimers);
+    console.log('Game: Saved');
 }
 
 //Funcion para comprobar los escenarios posibles para ganar
@@ -172,30 +192,37 @@ var toggleTurn = function() {
 }
 
 window.onload = function() {
-    p1Name = document.getElementById('p1');
-    p2Name = document.getElementById('p2');
-    p1TimerHTML = document.getElementById('p1Time');
-    p2TimerHTML = document.getElementById('p2Time');
-    globalTimerHTML = document.getElementById('time');
-    columnsHTML = document.getElementsByClassName('column');
-    boardHTML = document.getElementById('board');
-    turn1HTML = document.getElementById('turn1');
-    turn2HTML = document.getElementById('turn2');
-    popup = document.getElementById('popup');
-    popupMessage = document.getElementById('message');
-    popupWinner = document.getElementById('winner');
-    document.getElementById('reset').addEventListener('click', resetGame);
-    document.getElementById('gameRestart').addEventListener('click', restartGame);
-    getPlayerNames();
-    p1 = new Player(p1Name.innerHTML.slice(0, -5));
-    p2 = new Player(p2Name.innerHTML.slice(0, -5));
-    p1Timer = new Timer(p1TimerHTML, 0, lastUpdatedTime, 0);
-    p2Timer = new Timer(p2TimerHTML, 0, lastUpdatedTime, 0);
-    globalTimer = new Timer(globalTimerHTML, 0, lastUpdatedTime, 0); 
-    globalTimer.startTimer();
-    turn = Math.random() > 0.5 ? 'p1' : 'p2';
-    toggleTurn();
-    board = new Board(boardHTML, columnsHTML, twoPlayerBoard);
-    board.render();
-    flipTurn();
+    //data persistence
+    savedGames = JSON.parse(localStorage['savedGames'] || '[]');
+    savedTimers = JSON.parse(localStorage['savedTimers'] || '[]');
+
+    if(window.location.href.indexOf('game.html') > -1) {
+        p1Name = document.getElementById('p1');
+        p2Name = document.getElementById('p2');
+        p1TimerHTML = document.getElementById('p1Time');
+        p2TimerHTML = document.getElementById('p2Time');
+        globalTimerHTML = document.getElementById('time');
+        columnsHTML = document.getElementsByClassName('column');
+        boardHTML = document.getElementById('board');
+        turn1HTML = document.getElementById('turn1');
+        turn2HTML = document.getElementById('turn2');
+        popup = document.getElementById('popup');
+        popupMessage = document.getElementById('message');
+        popupWinner = document.getElementById('winner');
+        document.getElementById('reset').addEventListener('click', resetGame);
+        document.getElementById('gameRestart').addEventListener('click', restartGame);
+        document.getElementById('gameSave').addEventListener('click', saveGame);
+        getPlayerNames();
+        p1 = new Player(p1Name.innerHTML.slice(0, -5));
+        p2 = new Player(p2Name.innerHTML.slice(0, -5));
+        p1Timer = new Timer(p1TimerHTML, 0, lastUpdatedTime, 0);
+        p2Timer = new Timer(p2TimerHTML, 0, lastUpdatedTime, 0);
+        globalTimer = new Timer(globalTimerHTML, 0, lastUpdatedTime, 0); 
+        globalTimer.startTimer();
+        turn = Math.random() > 0.5 ? 'p1' : 'p2';
+        toggleTurn();
+        board = new Board(boardHTML, columnsHTML, twoPlayerBoard);
+        board.render();
+        flipTurn();
+    }
 } 
