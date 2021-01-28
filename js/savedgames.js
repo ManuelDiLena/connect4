@@ -1,17 +1,49 @@
 'use strict'
 
 var gameLI = null;
+var btnBack = null;
+var btnNext = null;
 var savedGamesHTML = null;
 var p1HTML = null;
 var p2HTML = null;
 var dateHTML = null;
+var listSection = null;
 var empty = null;
+var arrGameLI = null;
+var savedGameIndex = null;
+var start = 0;
+var end = 5;
+
+var selectGame = function(e) {
+    var gameIndex = arrGameLI.indexOf(e.target);
+    savedGameIndex = gameIndex;
+    localStorage['gameIndex'] = JSON.stringify(savedGameIndex);
+}
+
+//Cambia la seccion de la lista modificando los parametros de inicio y finalizacion
+var navigation = function(e) {
+    var btn = e.target.id;
+    if(btn === 'savedNext') {
+        start += 5;
+        end += 5;
+    } else {
+        if(start >= 5) {
+            start -= 5;
+            end -= 5;
+        }
+    }
+    loadSavedGamesData();
+}
+
+//Funcion que habilita/desabilita el boton Next dependiendo si la pagina esta llena y lo mismo con el boton Back
+var displayButtons = function() {
+    (listSection.length < 5) ? btnNext.className += ' disabled' : btnNext.className = 'navigation btn-controls';
+    (start >= 5) ? btnBack.className = 'navigation btn-controls' : btnBack.className += ' disabled';
+}
 
 //Funcion para mostrar solo los primeros 5 juegos guardados
 var loadSavedGamesData = function() {
-    var start = 0;
-    var end = 5;
-    var listSection = Array.from(gameLI).slice(start, end);
+    listSection = arrGameLI.slice(start, end);
 
     for(var i = 0; i < savedGames.length; i++) {
         p1HTML[i].innerHTML = savedGames[i].p1.name;
@@ -23,9 +55,16 @@ var loadSavedGamesData = function() {
         gameLI[l].className = 'game hidden';
     }
 
-    for(var j = 0; j < savedGames.length; j++) {
-        listSection[j].className = ' game';
+    for(var j = 0; j < listSection.length; j++) {
+        listSection[j].className = 'game';
     }
+    displayButtons();
+}
+
+var showEmptyList = function() {
+    empty.className = '';
+    btnBack.className += ' disabled';
+    btnNext.className += ' disabled';
 }
 
 var renderList = function() {
@@ -43,10 +82,12 @@ var renderList = function() {
         html += '</li>';
     }
     savedGamesHTML.innerHTML = html;
+    arrGameLI = Array.from(gameLI);
     loadSavedGamesData();
 }
 
 window.onload = function() {
+    savedGameIndex = JSON.parse(localStorage['gameIndex'] || '[]');
     savedGames = JSON.parse(localStorage['savedGames']);
     savedGamesHTML = document.getElementById('list');
     gameLI = document.getElementsByClassName('game');
@@ -54,5 +95,10 @@ window.onload = function() {
     p2HTML = document.getElementsByClassName('game-info p2');
     dateHTML = document.getElementsByClassName('date');
     empty = document.getElementById('empty');
-    (savedGames.length > 0) ? renderList() : empty.className = '';
+    btnBack = document.getElementById('savedBack');
+    btnNext =  document.getElementById('savedNext');
+    btnNext.addEventListener('click', navigation);
+    btnBack.addEventListener('click', navigation);
+    (savedGames.length > 0) ? renderList() : showEmptyList();
+    arrGameLI.forEach(elem => elem.addEventListener('click', selectGame));
 } 

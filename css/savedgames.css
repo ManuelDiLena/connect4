@@ -218,4 +218,16 @@ h2 {
     h2 {
         font-size: 30px;
     }
+
+    .game {
+        width: 100%;
+    }
+
+    .match-container {
+        min-width: 250px;
+    }
+
+    .date {
+        margin: 2px 0;
+    }
 } 
