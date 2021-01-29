@@ -3,6 +3,7 @@
 var gameLI = null;
 var btnBack = null;
 var btnNext = null;
+var btnLoad = null;
 var savedGamesHTML = null;
 var p1HTML = null;
 var p2HTML = null;
@@ -13,6 +14,12 @@ var arrGameLI = null;
 var savedGameIndex = null;
 var start = 0;
 var end = 5;
+
+var loadGame = function() {
+    var newGame = false;
+    localStorage['newGame'] = JSON.stringify(newGame);
+    location.href = 'game.html';
+}
 
 var selectGame = function(e) {
     var gameIndex = arrGameLI.indexOf(e.target);
@@ -97,6 +104,8 @@ window.onload = function() {
     empty = document.getElementById('empty');
     btnBack = document.getElementById('savedBack');
     btnNext =  document.getElementById('savedNext');
+    btnLoad =  document.getElementById('loadGame');
+    btnLoad.addEventListener('click', loadGame);
     btnNext.addEventListener('click', navigation);
     btnBack.addEventListener('click', navigation);
     (savedGames.length > 0) ? renderList() : showEmptyList();

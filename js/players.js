@@ -73,6 +73,8 @@ var errorMsg = function() {
 
 var nextPage = function() {
     savePlayerNames();
+    var newGame = true;
+    localStorage['newGame'] = JSON.stringify(newGame);
     location.href = 'game.html';
 }
 
