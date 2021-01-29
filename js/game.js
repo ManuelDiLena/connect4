@@ -2,17 +2,22 @@
 
 var p1 = null;
 var p2 = null;
+var p3 = null;
 var p1Name = null;
 var p2Name = null;
+var p3Name = null;
 var p1Timer = null;
 var p2Timer = null;
+var p3Timer = null;
 var globalTimer = null;
 var boardHTML = null;
 var columnsHTML = null;
 var turn1HTML = null;
 var turn2HTML = null;
+var turn3HTML = null;
 var p1TimerHTML = null;
 var p2TimerHTML = null;
+var p3TimerHTML = null;
 var globalTimerHTML = null;
 var popup = null;
 var popupMessage = null;
@@ -25,7 +30,9 @@ var turn = null;
 var lastUpdatedTime = new Date().getTime();
 var savedGames = [];
 var savedTimers = [];
+var savedNames = [];
 var gameOver = false;
+var threePlayers = false;
 
 var twoPlayerBoard = [
     [null, null, null, null, null, null],
@@ -35,6 +42,19 @@ var twoPlayerBoard = [
     [null, null, null, null, null, null],
     [null, null, null, null, null, null],
     [null, null, null, null, null, null]
+];
+
+var threePlayerBoard = [
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null]
 ];
 
 //Funciones para reiniciar el juego y los cronometros
@@ -60,12 +80,14 @@ var resetTimers = function() {
     globalTimer.resetTimer();
     p1Timer.resetTimer();
     p2Timer.resetTimer();
+    if(threePlayers) {p3Timer.resetTimer();}
 }
 
 var stopTimers = function() {
     globalTimer.stopTimer();
     p1Timer.stopTimer();
     p2Timer.stopTimer();
+    if(threePlayers) {p3Timer.stopTimer();}
 }
 
 //Funcion para mostrar cartel con el ganador
@@ -94,8 +116,13 @@ var getDate = function() {
 
 //Funcion para guardar la partida con los nombres y los tiempos
 var saveGame = function() {
-    savedGames.push({currentBoard: board.board, p1: p1, p2: p2, turn: turn, date: getDate()});
-    savedTimers.push({p1: p1Timer, p2: p2Timer, globalTime: globalTimer});
+    if(threePlayers) {
+        savedGames.push({currentBoard: board.board, p1: p1, p2: p2, p3: p3, turn: turn, date: getDate()});
+        savedTimers.push({p1: p1Timer, p2: p2Timer, p3: p3Timer, globalTime: globalTimer});
+    } else {
+        savedGames.push({currentBoard: board.board, p1: p1, p2: p2, turn: turn, date: getDate()});
+        savedTimers.push({p1: p1Timer, p2: p2Timer, globalTime: globalTimer});
+    }
     localStorage['savedGames'] = JSON.stringify(savedGames);
     localStorage['savedTimers'] = JSON.stringify(savedTimers);
     console.log('Game: Saved');
@@ -160,9 +187,10 @@ var checkDraw =  function() {
 }
 
 var getPlayerNames = function() {
-    var savedNames = JSON.parse(localStorage['playersNames']);
+    savedNames = JSON.parse(localStorage['playersNames']);
     p1Name.innerHTML = savedNames[0].namep1 + ' (P1)';
     p2Name.innerHTML = savedNames[0].namep2 + ' (P2)';
+    if(savedNames[0].namep3) {p3Name.innerHTML = savedNames[0].namep3 + ' (P3)';}
 }
 
 //Funcion para cambiar el color de las fichas de los jugadores dependiendo el turno
@@ -170,24 +198,47 @@ var flipTurn = function() {
     if(turn === 'p1') {
         turn1HTML.className = 'switch-p1 turn-p1';
         turn2HTML.className = 'gray';
-        
-    } else {
+        turn3HTML.className = 'gray';
+    } else if(turn === 'p2') {
         turn2HTML.className = 'switch-p2 turn-p2';
         turn1HTML.className = 'gray';
+        turn3HTML.className = 'gray';
+    } else {
+        turn3HTML.className = 'switch-p3 turn-p3';
+        turn1HTML.className = 'gray';
+        turn2HTML.className = 'gray';
     }
 }
 
 var toggleTurn = function() {
     if(!gameOver) {
-        turn = (turn === 'p1') ? 'p2' : 'p1';
-        if(turn === 'p1') {
-            p2Timer.stopTimer();
-            p1Timer.startTimer();
+        if(!threePlayers) {
+            turn = (turn === 'p1') ? 'p2' : 'p1';
+            if(turn === 'p1') {
+                p2Timer.stopTimer();
+                p1Timer.startTimer();
+            } else {
+                p1Timer.stopTimer();
+                p2Timer.startTimer();
+            }
+            flipTurn();
         } else {
-            p1Timer.stopTimer();
-            p2Timer.startTimer();
+            turn = (turn === 'p1') ? 'p2' : (turn === 'p3' ? 'p1' : 'p3');
+            if(turn === 'p1') {
+                p2Timer.stopTimer();
+                p3Timer.stopTimer();
+                p1Timer.startTimer();
+            } else if (turn === 'p2') {
+                p1Timer.stopTimer();
+                p3Timer.stopTimer();
+                p2Timer.startTimer();
+            } else {
+                p1Timer.stopTimer();
+                p2Timer.stopTimer();
+                p3Timer.startTimer();
+            }
+            flipTurn();
         }
-        flipTurn();
     }
 }
 
@@ -201,15 +252,19 @@ var loadSavedGame = function() {
     turn = savedGames[savedGameIndex].turn;
     p1 = savedGames[savedGameIndex].p1;
     p2 = savedGames[savedGameIndex].p2;
+    p3 = savedGames[savedGameIndex].p3;
 
     p1Timer.currentTimer = savedTimers[savedGameIndex].p1.currentTimer;
     p1Timer.lastUpdatedTime = savedTimers[savedGameIndex].p1.lastUpdatedTime;
-
     p2Timer.currentTimer = savedTimers[savedGameIndex].p2.currentTimer;
     p2Timer.lastUpdatedTime = savedTimers[savedGameIndex].p2.lastUpdatedTime;
-
     globalTimer.currentTimer = savedTimers[savedGameIndex].globalTime.currentTimer;
     globalTimer.lastUpdatedTime = savedTimers[savedGameIndex].globalTime.lastUpdatedTime;
+    if(threePlayers) {
+        p3Timer.currentTimer = savedTimers[savedGameIndex].p3.currentTimer;
+        p3Timer.lastUpdatedTime = savedTimers[savedGameIndex].p3.lastUpdatedTime;
+        p3Timer.startTimer();
+     }
 
     board.render();
     globalTimer.startTimer();
@@ -220,7 +275,18 @@ var loadSavedGame = function() {
 
 var initialize = function() {
     var isNewGame = JSON.parse(localStorage['newGame']);
+    getPlayerNames();
+
     board = new Board(boardHTML, columnsHTML, twoPlayerBoard);
+
+    if(savedNames[0].namep3) {
+        threePlayers = true;
+        board = new Board(boardHTML, columnsHTML, threePlayerBoard);
+        p3TimerHTML.className = ' ';
+        p3 = new Player('Player 3');
+        p3Timer = new Timer(p3TimerHTML, 0, lastUpdatedTime, 0);
+    }
+    
     p1 = new Player('Player 1');
     p2 = new Player('Player 2');
     p1Timer = new Timer(p1TimerHTML, 0, lastUpdatedTime, 0);
@@ -228,9 +294,9 @@ var initialize = function() {
     globalTimer = new Timer(globalTimerHTML, 0, lastUpdatedTime, 0); 
 
     if(isNewGame) {
-        getPlayerNames();
-        p1 = new Player(p1Name.innerHTML.slice(0, -5));
-        p2 = new Player(p2Name.innerHTML.slice(0, -5));
+        p1.name = p1Name.innerHTML.slice(0, -5);
+        p2.name = p2Name.innerHTML.slice(0, -5);
+        (threePlayers) ? p3.name = p3Name.innerHTML.slice(0, -5) : '';
         turn = Math.random() > 0.5 ? 'p1' : 'p2';
         globalTimer.startTimer();
         toggleTurn();
@@ -246,17 +312,21 @@ window.onload = function() {
     //data persistence
     savedGames = JSON.parse(localStorage['savedGames'] || '[]');
     savedTimers = JSON.parse(localStorage['savedTimers'] || '[]');
+    savedNames = JSON.parse(localStorage['PlayersNames'] || '[]');
 
     if(window.location.href.indexOf('game.html') > -1) {
         p1Name = document.getElementById('p1');
         p2Name = document.getElementById('p2');
+        p3Name = document.getElementById('p3');
         p1TimerHTML = document.getElementById('p1Time');
         p2TimerHTML = document.getElementById('p2Time');
+        p3TimerHTML = document.getElementById('p3Time');
         globalTimerHTML = document.getElementById('time');
         columnsHTML = document.getElementsByClassName('column');
         boardHTML = document.getElementById('board');
         turn1HTML = document.getElementById('turn1');
         turn2HTML = document.getElementById('turn2');
+        turn3HTML = document.getElementById('turn3');
         popup = document.getElementById('popup');
         popupMessage = document.getElementById('message');
         popupWinner = document.getElementById('winner');
