@@ -19,6 +19,7 @@ var p1TimerHTML = null;
 var p2TimerHTML = null;
 var p3TimerHTML = null;
 var globalTimerHTML = null;
+var p3Container = null;
 var popup = null;
 var popupMessage = null;
 var popupWinner = null;
@@ -198,11 +199,15 @@ var flipTurn = function() {
     if(turn === 'p1') {
         turn1HTML.className = 'switch-p1 turn-p1';
         turn2HTML.className = 'gray';
-        turn3HTML.className = 'gray';
+        if(threePlayers) {
+            turn3HTML.className = 'gray';
+        }
     } else if(turn === 'p2') {
         turn2HTML.className = 'switch-p2 turn-p2';
         turn1HTML.className = 'gray';
-        turn3HTML.className = 'gray';
+        if(threePlayers) {
+            turn3HTML.className = 'gray';
+        }
     } else {
         turn3HTML.className = 'switch-p3 turn-p3';
         turn1HTML.className = 'gray';
@@ -281,8 +286,8 @@ var initialize = function() {
 
     if(savedNames[0].namep3) {
         threePlayers = true;
+        p3Container.className = 'opponent';
         board = new Board(boardHTML, columnsHTML, threePlayerBoard);
-        p3TimerHTML.className = ' ';
         p3 = new Player('Player 3');
         p3Timer = new Timer(p3TimerHTML, 0, lastUpdatedTime, 0);
     }
@@ -327,6 +332,7 @@ window.onload = function() {
         turn1HTML = document.getElementById('turn1');
         turn2HTML = document.getElementById('turn2');
         turn3HTML = document.getElementById('turn3');
+        p3Container = document.getElementById('p3Container');
         popup = document.getElementById('popup');
         popupMessage = document.getElementById('message');
         popupWinner = document.getElementById('winner');

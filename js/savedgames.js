@@ -74,7 +74,7 @@ var loadSavedGamesData = function() {
 }
 
 var showEmptyList = function() {
-    empty.className = '';
+    empty.className = ' ';
     btnBack.className += ' disabled';
     btnNext.className += ' disabled';
 }
@@ -101,7 +101,7 @@ var renderList = function() {
 
 window.onload = function() {
     savedGameIndex = JSON.parse(localStorage['gameIndex'] || '[]');
-    savedGames = JSON.parse(localStorage['savedGames']);
+    savedGames = JSON.parse(localStorage['savedGames'] || '[]');
     savedGamesHTML = document.getElementById('list');
     gameLI = document.getElementsByClassName('game');
     p1HTML = document.getElementsByClassName('game-info p1');
