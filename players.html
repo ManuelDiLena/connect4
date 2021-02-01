@@ -10,22 +10,23 @@
 <body>
     <section id="players">
         <div class="players">
-            <p>Enter Players' Names</p>
+            <p id="title">Enter Players' Names</p>
             <div class="input-style">
-                <input id="p1Name" type="text" maxlength="6">
+                <input id="p1Name" type="text" maxlength="8">
                 <div class="tag">P1</div>
             </div>
             <div class="input-style">
-                <input id="p2Name" type="text" maxlength="6">
+                <input id="p2Name" type="text" maxlength="8">
                 <div class="tag">P2</div>
             </div>
             <div class="input-style">
                 <div id="btnContainer">
                     <button id="addPlayer" class="btn" type="button">+</button>
                 </div>
-                <input id="p3Name" class="hidden" type="text" maxlength="6">
+                <input id="p3Name" class="hidden" type="text" maxlength="8">
                 <div id="p3Tag" class="tag hidden">P3</div>
             </div>
+            <p id="error" class="no-visibility">Player names need to be at least 3 characters long</p>
             <div class="options-players">
                 <a href="index.html" class="btn-players" type="button">Cancel</a>
                 <button id="namesPlay" class="btn-players">Play!</button>

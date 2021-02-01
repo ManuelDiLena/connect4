@@ -19,9 +19,7 @@ var validateForm = function() {
 
     for(var i = 0; i < formElements.length; i++) {
        if(formElements[i].value === '') {
-           formElements[i].placeholder = 'Empty field';
-           isValid = false;
-        } else {
+           
 
             if(formElements[i].id === 'name') {
                 if(!alphaNum.test(formElements[i].value)) {
@@ -32,7 +30,7 @@ var validateForm = function() {
 
                 if(formElements[i].value.length < 3) {
                     formElements[i].value = '';
-                    formElements[i].placeholder = 'Please enter more than 3 characters';
+                    formElements[i].placeholder = 'Please enter a name';
                     isValid = false;
                 }
 

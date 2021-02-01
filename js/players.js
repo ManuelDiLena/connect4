@@ -7,6 +7,7 @@ var p3Tag = null;
 var btnPlay = null;
 var btnAdd = null;
 var btnAddContainer = null;
+var errorMsg = null;
 var playerNames = [];
 
 //Funcion para agregar el input del 3 jugador con el boton +
@@ -33,18 +34,21 @@ var validateInput = function() {
     if(p3Name.className === ' ' && p3Name.value.length < 3) {
         p3Name.value = '';
         p3Name.placeholder = 'Too short!';
+        errorMsg.className = '';
         isValid = false;
     }
 
     if(p1Name.value.length < 3) {
         p1Name.value = '';
         p1Name.placeholder = 'Too short!';
+        errorMsg.className = '';
         isValid = false;
     }
 
     if(p2Name.value.length < 3) {
         p2Name.value = '';
         p2Name.placeholder = 'Too short!';
+        errorMsg.className = '';
         isValid = false;
     }
     return isValid;
@@ -63,10 +67,10 @@ var savePlayerNames = function() {
 var errorBtn = function() {
     btnPlay.innerHTML = 'Invalid Names';
     btnPlay.className += ' error';
-    setTimeout(errorMsg, 3000);
+    setTimeout(btnErrorMsg, 3000);
 }
 
-var errorMsg = function() {
+var btnErrorMsg = function() {
     btnPlay.className = 'btn-players';
     btnPlay.innerHTML = 'Play!';
 }
@@ -86,6 +90,7 @@ window.onload = function() {
     btnPlay = document.getElementById('namesPlay')
     btnAdd = document.getElementById('addPlayer');
     btnAddContainer = document.getElementById('btnContainer');
+    errorMsg = document.getElementById('error');
 
     btnAdd.addEventListener('click', function() {
         displayInput();
