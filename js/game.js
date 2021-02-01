@@ -142,7 +142,7 @@ var checkWin = function() {
         }
     }
 
-    for(var i = 0; i < 4; i++) {
+    for(var i = 0; i < board.board.length - 3; i++) {
         for(var j = 0; j < 4; j++) {
             if(board.board[i][j]) {
                 //check horizontal placement

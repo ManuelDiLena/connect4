@@ -7,6 +7,7 @@ var btnLoad = null;
 var savedGamesHTML = null;
 var p1HTML = null;
 var p2HTML = null;
+var p3HTML = null;
 var dateHTML = null;
 var listSection = null;
 var empty = null;
@@ -55,6 +56,10 @@ var loadSavedGamesData = function() {
     for(var i = 0; i < savedGames.length; i++) {
         p1HTML[i].innerHTML = savedGames[i].p1.name;
         p2HTML[i].innerHTML = savedGames[i].p2.name;
+        if(savedGames[i].p3 != null) {
+            p3HTML[i].className = 'game-info p3';
+            p3HTML[i].innerHTML = 'VS ' + savedGames[i].p3.name;
+        }
         dateHTML[i].innerHTML =  savedGames[i].date;
     }
 
@@ -84,6 +89,7 @@ var renderList = function() {
         html += '<div class="game-info p1"></div>';
         html += '<p>VS</p>';
         html += '<div class="game-info p2"></div>';
+        html += '<div class="game-info p3 hidden"></div>';
         html += '</div>';
         html += '<p class="date"></p>';
         html += '</li>';
@@ -100,6 +106,7 @@ window.onload = function() {
     gameLI = document.getElementsByClassName('game');
     p1HTML = document.getElementsByClassName('game-info p1');
     p2HTML = document.getElementsByClassName('game-info p2');
+    p3HTML = document.getElementsByClassName('game-info p3');
     dateHTML = document.getElementsByClassName('date');
     empty = document.getElementById('empty');
     btnBack = document.getElementById('savedBack');

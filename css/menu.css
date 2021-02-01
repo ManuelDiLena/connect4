@@ -65,6 +65,27 @@
     color: #ffffff;
 }
 
+.footer {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    padding: 5px;
+    background-color: #b9b9b9;
+    border-radius: 10px;
+}
+
+.footer a {
+    font-size: 40px;
+    padding: 0 10px;
+    font-weight: 700;
+    text-decoration: none;
+    color: #000746;
+    transition: all 0.5s;
+}
+
+.footer a:hover {
+    color: #0022ff;
+}
 
 @media screen and (max-width: 650px) {
     .menu {
