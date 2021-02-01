@@ -47,7 +47,11 @@
 
 #generalTime {
     position: absolute;
-    transform: translateX(625px);
+    transform: translateX(605px);
+    border: 3px solid #000746;
+    border-radius: 10px;
+    padding: 15px;
+    background-color: #0022ff;
     font-size: 25px;
     line-height: 0;
     letter-spacing: 8px;

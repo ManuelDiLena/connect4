@@ -144,6 +144,21 @@ h2 {
     pointer-events: none;
 }
 
+.del {
+    margin: 0.3em;
+    padding: 0.1em 0.5em;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    color: #860000;
+    transition: 0.3s;
+}
+
+.del:hover {
+    background-color: #860000;
+    color: #f1f1f1;
+    transition: 0.3s;
+}
+
 #optionsList {
     display: flex;
     flex-direction: column;
