@@ -36,7 +36,8 @@ class Board {
     render = function() {
         var html = '';
         for(var i = 0; i < this.board.length; i++) {
-            html += '<div id="c' + i + '" class="column">';
+            (this.board.length === 10) ? html += '<div id="c' + i + '" class="column three">' 
+            : html += '<div id="c' + i + '" class="column">';
             for(var j = this.board[i].length - 1; j >= 0; j--) {
                 html += '<div id="s' + i + j + '" class="slot';
                 if(this.board[i][j]) {html += ' ' + this.board[i][j];}

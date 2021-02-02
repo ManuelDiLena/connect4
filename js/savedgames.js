@@ -71,7 +71,7 @@ var loadSavedGamesData = function() {
         p2HTML[i].innerHTML = savedGames[i].p2.name;
         if(savedGames[i].p3 != null) {
             p3HTML[i].className = 'game-info p3';
-            p3HTML[i].innerHTML = 'VS ' + savedGames[i].p3.name;
+            p3HTML[i].innerHTML = savedGames[i].p3.name;
         }
         dateHTML[i].innerHTML =  savedGames[i].date;
     }
@@ -93,15 +93,16 @@ var showEmptyList = function() {
 }
 
 var renderList = function() {
-    var storedGames = JSON.parse(localStorage['savedGames']).length;
+    var storedGames = JSON.parse(localStorage['savedGames']);
     var html = '';
 
-    for(var i = 0; i < storedGames; i++) {
+    for(var i = 0; i < storedGames.length; i++) {
         html += '<li tabindex="-1" class="game hidden">';
         html += '<div class="match-container">';
         html += '<div class="game-info p1"></div>';
         html += '<p>VS</p>';
         html += '<div class="game-info p2"></div>';
+        if(storedGames[i].p3) {html += '<p>VS</p>';}
         html += '<div class="game-info p3 hidden"></div>';
         html += '</div>';
         html += '<p class="date"></p><span class="del">Del</span>';

@@ -92,6 +92,7 @@
 .board .column {
     padding: 5px;
     background-color: #ffffff;
+    max-width: 15vw;
 }
 .board .column:hover {
     background-color: #8c8c8c;
@@ -250,6 +251,7 @@
     border-radius: 15px;
     background-color: #b9b9b9;
     font-size: 18px;
+    text-align: center;
     animation: bounce 1.5s;
     z-index: 1;
 }
@@ -304,5 +306,11 @@
     }
     100% {
         transform: translateY(0);
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .column.three {
+        max-width: 10vw;
     }
 }

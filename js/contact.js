@@ -18,43 +18,38 @@ var validateForm = function() {
     var isValid = true;
 
     for(var i = 0; i < formElements.length; i++) {
-       if(formElements[i].value === '') {
-           
-
-            if(formElements[i].id === 'name') {
-                if(!alphaNum.test(formElements[i].value)) {
-                    formElements[i].value = '';
-                    formElements[i].placeholder = 'Invalid characters';
-                    isValid = false;
-                }
-
-                if(formElements[i].value.length < 3) {
-                    formElements[i].value = '';
-                    formElements[i].placeholder = 'Please enter a name';
-                    isValid = false;
-                }
-
-                name = formElements[i].value;
+        if(formElements[i].id === 'name') {
+            if(!alphaNum.test(formElements[i].value)) {
+                formElements[i].value = '';
+                formElements[i].placeholder = 'Invalid characters';
+                isValid = false;
             }
 
-            if(formElements[i].id === 'email') {
-                if(!validEmail.test(formElements[i].value)) {
-                    formElements[i].value = '';
-                    formElements[i].placeholder = 'Invalid Email format';
-                    isValid = false;
-                }
+            if(formElements[i].value.length < 3) {
+                formElements[i].value = '';
+                formElements[i].placeholder = 'Please enter more than 3 characters';
+                isValid = false;
             }
+            name = formElements[i].value;
+        }
 
-            if(formElements[i].id === 'message') {
-                if(formElements[i].value.length < 5) {
-                    formElements[i].value = '';
-                    formElements[i].placeholder = 'Please enter more than 5 characters';
-                    isValid = false;
-                }
+        if(formElements[i].id === 'email') {
+            if(!validEmail.test(formElements[i].value)) {
+                formElements[i].value = '';
+                formElements[i].placeholder = 'Invalid Email format';
+                isValid = false;
+            }
+        }
 
-                message = formElements[i].value;
-            }   
-       }
+        if(formElements[i].id === 'message') {
+            if(formElements[i].value.length < 5) {
+                formElements[i].value = '';
+                formElements[i].placeholder = 'Please enter more than 5 characters';
+                isValid = false;
+            }
+            message = formElements[i].value;
+        }   
+       
     }
 
     (isValid) ? sendEmail(name, message) : styleBtn();
