@@ -22,7 +22,9 @@ var end = 5;
 var deleteGame = function(e) {
     var btn =  Array.from(btnDelete).indexOf(e.target);
     savedGames.splice(savedGames[btn], 1);
+    savedTimers.splice(savedTimers[btn], 1);
     localStorage['savedGames'] = JSON.stringify(savedGames);
+    localStorage['savedTimers'] = JSON.stringify(savedTimers);
     location.reload();
 }
 
@@ -113,6 +115,7 @@ var renderList = function() {
 window.onload = function() {
     savedGameIndex = JSON.parse(localStorage['gameIndex'] || '[]');
     savedGames = JSON.parse(localStorage['savedGames'] || '[]');
+    savedTimers = JSON.parse(localStorage['savedTimers'] || '[]');
     savedGamesHTML = document.getElementById('list');
     gameLI = document.getElementsByClassName('game');
     p1HTML = document.getElementsByClassName('game-info p1');

@@ -29,9 +29,12 @@ var saveBtn = null;
 var board = null;
 var turn = null;
 var lastUpdatedTime = new Date().getTime();
+var savedGameIndex = null;
 var savedGames = [];
 var savedTimers = [];
 var savedNames = [];
+var saving = false;
+var isNewGame = null;
 var gameOver = false;
 var threePlayers = false;
 
@@ -60,21 +63,33 @@ var threePlayerBoard = [
 
 //Funciones para reiniciar el juego y los cronometros
 var restartGame = function() {
-    gameOver = false;
-    popup.className = ' hidden';
-    board.resetBoard();
-    board.render();
-    resetTimers();
-    setTimeout(toggleTurn, 1);
+    popup.className = 'hidden';
+    boardHTML.className = 'board';
+    if(saving) {
+        saving = false;
+        startTimers();
+    } else {
+        gameOver = false;
+        board.resetBoard();
+        board.render();
+        resetTimers();
+        setTimeout(toggleTurn, 1);
+    }
 }
 
 var resetGame = function() {
-    gameOver = false;
-    popup.className = ' hidden';
-    board.resetBoard();
-    board.render();
-    resetTimers();
-    setTimeout(toggleTurn, 1);
+    popup.className = 'hidden';
+    boardHTML.className = 'board';
+    if(saving) {
+        saving = false;
+        startTimers();
+    } else {
+        gameOver = false;
+        board.resetBoard();
+        board.render();
+        resetTimers();
+        setTimeout(toggleTurn, 1);
+    }
 }
 
 var resetTimers = function() {
@@ -82,6 +97,13 @@ var resetTimers = function() {
     p1Timer.resetTimer();
     p2Timer.resetTimer();
     if(threePlayers) {p3Timer.resetTimer();}
+}
+
+var startTimers = function() {
+    globalTimer.startTimer();
+    p1Timer.startTimer();
+    p2Timer.startTimer();
+    if(threePlayers) {p3Timer.startTimer();}
 }
 
 var stopTimers = function() {
@@ -93,17 +115,24 @@ var stopTimers = function() {
 
 //Funcion para mostrar cartel con el ganador
 var displayPopup = function(playerName) {
-    gameOver = true;
     popup.className = ' ';
-    if(playerName) {
-        playerName = (playerName === 'p1') ? p1.name : p2.name;
-        popupWinner.innerHTML = playerName;
-        popupMessage.innerHTML = 'WON!';
+    boardHTML.className += ' disabled blur'
+    if(saving) {
+        popupWinner.innerHTML = '';
+        popupMessage.innerHTML = 'Game saved!';
+        resetBtn.innerHTML = 'OK';
     } else {
-        popupWinner.innerHTML = 'Nobody wins...';
-        popupMessage.innerHTML = 'It\'s a TIE!';
+        gameOver = true;
+        if(playerName) {
+            playerName = (playerName === 'p1') ? p1.name : p2.name;
+            popupWinner.innerHTML = playerName;
+            popupMessage.innerHTML = 'WON!';
+        } else {
+            popupWinner.innerHTML = 'Nobody wins...';
+            popupMessage.innerHTML = 'It\'s a TIE!';
+        }
+        resetBtn.innerHTML = 'Play Again';
     }
-    boardHTML.className += ' blur'
     stopTimers();
 }
 
@@ -126,7 +155,8 @@ var saveGame = function() {
     }
     localStorage['savedGames'] = JSON.stringify(savedGames);
     localStorage['savedTimers'] = JSON.stringify(savedTimers);
-    console.log('Game: Saved');
+    saving = true;
+    displayPopup(null);
 }
 
 //Funcion para comprobar los escenarios posibles para ganar
@@ -188,10 +218,22 @@ var checkDraw =  function() {
 }
 
 var getPlayerNames = function() {
-    savedNames = JSON.parse(localStorage['playersNames']);
-    p1Name.innerHTML = savedNames[0].namep1 + ' (P1)';
-    p2Name.innerHTML = savedNames[0].namep2 + ' (P2)';
-    if(savedNames[0].namep3) {p3Name.innerHTML = savedNames[0].namep3 + ' (P3)';}
+    if(isNewGame) {
+        savedNames = JSON.parse(localStorage['playersNames']);
+        p1Name.innerHTML = savedNames[0].namep1 + ' (P1)';
+        p2Name.innerHTML = savedNames[0].namep2 + ' (P2)';
+        if(savedNames[0].namep3) {
+            p3Name.innerHTML = savedNames[0].namep3 + ' (P3)';
+            threePlayers = true;
+        }
+    } else {
+        p1Name.innerHTML = savedGames[savedGameIndex].p1.name + ' (P1)';
+        p2Name.innerHTML = savedGames[savedGameIndex].p2.name + ' (P2)';
+        if(savedGames[savedGameIndex].p3) {
+            p3Name.innerHTML = savedGames[savedGameIndex].p3.name + ' (P3)';
+            threePlayers = true;
+        }
+    }
 }
 
 //Funcion para cambiar el color de las fichas de los jugadores dependiendo el turno
@@ -249,7 +291,6 @@ var toggleTurn = function() {
 
 //Funcion para cargar un juego guardado
 var loadSavedGame = function() {
-    var savedGameIndex = JSON.parse(localStorage['gameIndex']);
     savedGames = JSON.parse(localStorage['savedGames']);
     savedTimers = JSON.parse(localStorage['savedTimers']);
 
@@ -265,6 +306,7 @@ var loadSavedGame = function() {
     p2Timer.lastUpdatedTime = savedTimers[savedGameIndex].p2.lastUpdatedTime;
     globalTimer.currentTimer = savedTimers[savedGameIndex].globalTime.currentTimer;
     globalTimer.lastUpdatedTime = savedTimers[savedGameIndex].globalTime.lastUpdatedTime;
+
     if(threePlayers) {
         p3Timer.currentTimer = savedTimers[savedGameIndex].p3.currentTimer;
         p3Timer.lastUpdatedTime = savedTimers[savedGameIndex].p3.lastUpdatedTime;
@@ -279,13 +321,10 @@ var loadSavedGame = function() {
 }
 
 var initialize = function() {
-    var isNewGame = JSON.parse(localStorage['newGame']);
     getPlayerNames();
-
     board = new Board(boardHTML, columnsHTML, twoPlayerBoard);
 
-    if(savedNames[0].namep3) {
-        threePlayers = true;
+    if(threePlayers) {
         p3Container.className = 'opponent';
         board = new Board(boardHTML, columnsHTML, threePlayerBoard);
         p3 = new Player('Player 3');
@@ -317,8 +356,7 @@ window.onload = function() {
     //data persistence
     savedGames = JSON.parse(localStorage['savedGames'] || '[]');
     savedTimers = JSON.parse(localStorage['savedTimers'] || '[]');
-    savedNames = JSON.parse(localStorage['PlayersNames'] || '[]');
-
+    savedGameIndex = JSON.parse(localStorage['gameIndex'] || '[]');
     if(window.location.href.indexOf('game.html') > -1) {
         p1Name = document.getElementById('p1');
         p2Name = document.getElementById('p2');
@@ -333,12 +371,14 @@ window.onload = function() {
         turn2HTML = document.getElementById('turn2');
         turn3HTML = document.getElementById('turn3');
         p3Container = document.getElementById('p3Container');
+        resetBtn = document.getElementById('reset');
         popup = document.getElementById('popup');
         popupMessage = document.getElementById('message');
         popupWinner = document.getElementById('winner');
-        document.getElementById('reset').addEventListener('click', resetGame);
+        resetBtn.addEventListener('click', resetGame);
         document.getElementById('gameRestart').addEventListener('click', restartGame);
         document.getElementById('gameSave').addEventListener('click', saveGame);
+        isNewGame = JSON.parse(localStorage['newGame']);
         initialize();
     }
 } 
