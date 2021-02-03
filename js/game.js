@@ -120,7 +120,7 @@ var displayPopup = function(playerName) {
     boardHTML.className += ' disabled blur'
     if(saving) {
         popupWinner.innerHTML = '';
-        popupMessage.innerHTML = 'Game saved!';
+        popupMessage.innerHTML = 'Saved!';
         resetBtn.innerHTML = 'OK';
     } else {
         gameOver = true;
